@@ -8,7 +8,7 @@ export const sequelize = new Sequelize("Gharbas","postgres","root",{
 
 export const connection = () => {
     try{
-        sequelize.sync();
+        sequelize.sync({alter:true});
         console.log("database connected successfully");
     }
 

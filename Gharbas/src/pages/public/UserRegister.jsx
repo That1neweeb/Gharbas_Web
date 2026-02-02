@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "./schema/register.schema";
-import LogoSideCard from "../../component.jsx/LogoSideCard";
+import LogoSideCard from "../../component/LogoSideCard";
 import useApi from "../../hooks/useAPI";
 
-export const Register = () => {
+ const Register = () => {
   const {
     register,
     handleSubmit,
@@ -242,3 +242,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

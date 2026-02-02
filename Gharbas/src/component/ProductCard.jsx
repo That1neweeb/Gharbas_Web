@@ -11,7 +11,7 @@ export default function ProductCard({ product }) {
       {/* Image */}
       <div className="h-1/2 md:w-1/2 md:h-full ">
         <img
-          src={product.image_URLS}
+          src={`http://localhost:3000${product.image_URLS}`}
           alt="Listing"
           className="w-full h-full object-cover"
         />

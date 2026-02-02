@@ -34,7 +34,7 @@ export default function ProductDetails() {
       {/* Product Info */}
       <div className="flex flex-col md:flex-row gap-6">
         <img
-          src={product.image_URLS}
+          src={`http://localhost:3000${product.image_URLS}`}
           alt={product.productName}
           className="w-full md:w-1/2 h-64 md:h-auto object-cover rounded-lg"
         />

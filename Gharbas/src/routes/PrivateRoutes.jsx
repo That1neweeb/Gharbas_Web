@@ -1,9 +1,21 @@
-import React, { Suspense } from "react";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const PrivateRoutes = () => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("accessToken");
 
-  return token ? <Outlet /> : <Navigate to="/login" replace />;
+  useEffect(() => {
+    if (!token) {
+      toast.error("Please login to access this page");
+    }
+  }, [token]);
+
+  if (!token) {
+    return null; // stay on the current page 
+  }
+
+  return <Outlet />;
 };
+
 export default PrivateRoutes;

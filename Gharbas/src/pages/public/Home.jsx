@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import useApi from "../../hooks/useAPI";
-import Product from "./ProductDetails";
-import ProductCard from "../../component.jsx/productCard";
-import image from "../assets/elementor-placeholder-image.png";
-
+import Product from "../private/ProductDetails";
+import ProductCard from "../../component/productCard";
 function Home(){
     // const [products,setProducts] = useState();
     // const {callApi} = apiRequest();
@@ -25,7 +23,7 @@ function Home(){
     // );
 const products =[{
 id:1, productName:"listing 1", productDescription:"This is listing 1", productPrice:100, productQuantity:3, productLocation:"Location 1",
-image_URLS:image
+image_URLS:"/uploads/placeholder.png"
   }];
     return(
         <div className="bg-grey flex flex-col gap-4 p-4">

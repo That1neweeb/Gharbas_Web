@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "./schema/login.schema";
 import useApi from "../../hooks/useAPI";
-import LogoSideCard from "../../component.jsx/LogoSideCard";
+import LogoSideCard from "../../component/LogoSideCard";
 
 const Login = () => {
   const {
