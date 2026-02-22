@@ -1,56 +1,59 @@
-import { useState } from "react";
-
+  import { useState,useEffect } from "react";
+  import { useParams } from "react-router-dom";
+  import useApi from "../../hooks/useAPI";
+import { toast } from "react-toastify";
 export default function ProductDetails() {
-  // const { id } = useParams();
-  // const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1); // for booking quantity
+  const {callApi} = useApi();
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     const res = await fetch(`/api/listings/getlistingbyId/${id}`);
-  //     const data = await res.json();
-  //     setProduct(data);
-  //   };
-  //   fetchProduct();
-  // }, [id]);
+  const { id } = useParams();
+  const [content, setContent] = useState(null);
+  const [Rooms, setRooms] = useState(1); // for booking quantity
 
-  // if (!product) return <p>Loading...</p>;
+  useEffect(() => {
+    const fetchContent = async () => {
+      const res = await callApi("GET",`/listings/getlistingbyId/${id}`);  
+      console.log(res.data);
+      setContent((res.data)?res.data:[]);
+    };
+    fetchContent();
+  }, [id]);
 
-  // Handler functions
+  if (!content) return <p>Loading...</p>;
+
+  // Room selection handler functions
   const increment = () => {
-    if (quantity < product.productQuantity) setQuantity(quantity + 1);
+    if (Rooms < content.Rooms) setRooms(Rooms + 1);
+    else toast.error("No more rooms available")
   };
   const decrement = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+    if (Rooms > 1) setRooms(Rooms - 1);
   };
+// Date manager Function
+const datehandler = () => {}
 
-  const product =[{
-  id:1, productName:"listing 1", productDescription:"This is listing 1", productPrice:100, productQuantity:3, productLocation:"Location 1",
-  image_URLS:image
-    }];
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-[#1F1F1F] text-white rounded-xl shadow-lg">
-      {/* Product Info */}
+    <div className="mx-auto h-max-[90vh] p-6  bg-[#1F1F1F] text-white shadow-lg">
+      {/* Listing Info */}
       <div className="flex flex-col md:flex-row gap-6">
         <img
-          src={`http://localhost:3000${product.image_URLS}`}
-          alt={product.productName}
+          src={`http://localhost:3000${content.image_URLS}`}
+          alt={content.productName}
           className="w-full md:w-1/2 h-64 md:h-auto object-cover rounded-lg"
         />
 
         <div className="flex flex-col justify-between md:w-1/2">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{product.productName}</h1>
-            <p className="text-gray-400 mb-4">{product.productDescription}</p>
-            <p className="text-gray-300 mb-1">Location: {product.productLocation}</p>
-            <p className="text-gray-300 mb-4">Rooms Available: {product.productQuantity}</p>
-            <p className="text-xl font-bold text-orange-400 mb-4">${product.productPrice}</p>
+            <h1 className="text-3xl font-bold mb-2">{content.ListingName}</h1>
+            <p className="text-gray-400 mb-4">{content.Description}</p>
+            <p className="text-gray-300 mb-1">Location: {content.ListingLocation}</p>
+            <p className="text-gray-300 mb-4">Rooms Available: {content.Rooms}</p>
+            <p className="text-xl font-bold text-orange-400 mb-4">${content.Price}</p>
           </div>
 
           {/* Booking Options */}
           <div className="mt-4">
-            <h2 className="text-2xl font-semibold mb-2">Book This Product</h2>
+            <h2 className="text-2xl font-semibold mb-2">Book This HomeStay</h2>
             <form className="flex flex-col gap-3">
               <label>
                 Select Date:
@@ -62,14 +65,16 @@ export default function ProductDetails() {
               <label>
                 Select Time:
                 <input
-                  type="time"
+                  type="datetime-local"
+                  id="timeInput"
+                  onChange={datehandler}
                   className="ml-2 px-2 py-1 rounded bg-gray-800 text-white"
                 />
               </label>
 
               {/* Quantity with Plus/Minus Buttons */}
               <div className="flex items-center gap-3 mt-2">
-                <span>Quantity:</span>
+                <span>Rooms:</span>
                 <button
                   type="button"
                   onClick={decrement}
@@ -77,7 +82,7 @@ export default function ProductDetails() {
                 >
                   −
                 </button>
-                <span className="px-3">{quantity}</span>
+                <span className="px-3">{Rooms}</span>
                 <button
                   type="button"
                   onClick={increment}

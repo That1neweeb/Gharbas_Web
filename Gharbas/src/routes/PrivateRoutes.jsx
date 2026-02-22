@@ -1,18 +1,25 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const PrivateRoutes = () => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("access_token");
+  const location = useLocation();
 
   useEffect(() => {
     if (!token) {
-      toast.error("Please login to access this page");
+      toast.error("Login first");
     }
   }, [token]);
 
   if (!token) {
-    return null; // stay on the current page 
+    return (
+      <Navigate
+        to="/login"
+        state={{ from: location }}
+        replace
+      />
+    );
   }
 
   return <Outlet />;

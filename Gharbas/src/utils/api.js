@@ -6,7 +6,7 @@ export const apiRequest = async (method, endpoint, options = {}) => {
   if (!options) options = {}; // fallback in case null is passed
   console.log(options);
   const { data, params, headers } = options;
-  const token = localStorage.getItem("token"); 
+  const token = localStorage.getItem("access_token"); 
 
   console.log(data);
   

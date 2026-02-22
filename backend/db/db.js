@@ -4,7 +4,7 @@ import {Sequelize} from "sequelize";
 export const sequelize = new Sequelize("Gharbas","postgres","root",{
     host : "localhost",
     dialect : "postgres",
-});
+}); 
 
 export const connection = () => {
     try{

@@ -22,10 +22,10 @@ function Navbar() {
         </li>
         <li>
           <Link
-            to="/register"
+            to="/host"
             className="text-white font-semibold hover:text-orange-200 transition"
           >
-            Register
+            For Hosts
           </Link>
         </li>
       </ul>

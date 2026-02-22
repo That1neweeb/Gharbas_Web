@@ -3,5 +3,5 @@ import { login, register } from "../Controller/authController.js";
 
 export const authRouter = express.Router();
 
-authRouter.post("/Login",login);
+authRouter.post("/login",login);
 authRouter.post("/register",register);

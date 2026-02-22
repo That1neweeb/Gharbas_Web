@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function ProductCard({ product }) {
+export default function ListingCard({ listing  }) {
   return (
     <div className="bg-[#242424] w-full max-w-6xl
              rounded-2xl overflow:hidden 
@@ -11,9 +11,9 @@ export default function ProductCard({ product }) {
       {/* Image */}
       <div className="h-1/2 md:w-1/2 md:h-full ">
         <img
-          src={`http://localhost:3000${product.image_URLS}`}
+          src={`http://localhost:3000${listing.image_URLS}`}
           alt="Listing"
-          className="w-full h-full object-cover"
+          className="text-white w-full h-full object-cover"
         />
       </div>
 
@@ -22,23 +22,23 @@ export default function ProductCard({ product }) {
         
         <div>
           <h2 className="text-2xl font-semibold text-white mb-1">
-            {product.productName}
+            {listing.ListingName}
           </h2>
 
           <p className="text-sm text-gray-400 mb-4 line-clamp-2">
-            {product.productDescription}
+            {listing.Description}
           </p>
 
           <div className="space-y-2 text-sm">
             <p>
               <span className="text-gray-300">
-                {product.productLocation}
+                {listing.ListingLocation}
               </span>
             </p>
             <p>
               Rooms Available:{" "}
               <span className="text-gray-300">
-                {product.productQuantity}
+                {listing.Rooms}
               </span>
             </p>
           </div>
@@ -47,9 +47,9 @@ export default function ProductCard({ product }) {
         {/* Price & view details button*/}
         <div className="flex items-center justify-between mt-6">
           <p className="text-xl font-bold text-orange-400">
-            ${product.productPrice}
+            ${listing.Price}
           </p>
-        <Link to={`/products/${product.id}`} >
+        <Link to={`/listing/${listing.id}`} >
                 <button
             className="bg-orange-500 hover:bg-orange-600
                        text-white px-5 py-2 rounded-lg

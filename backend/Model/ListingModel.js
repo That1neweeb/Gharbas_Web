@@ -1,35 +1,42 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/db.js";
 
-export const Products = sequelize.define("Products",{
+export const Listings = sequelize.define("Listings",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    productName: {
+    ListingName: {
         type:DataTypes.STRING,
         allowNull: false
     },
-    productPrice: {
+    Price: {
         type:DataTypes.FLOAT,
         allowNull: false
     },
-    productQuantity: {
+    Rooms: {
         type:DataTypes.INTEGER,
         allowNull: false
     },
-    productDescription: {
+    Description: {
         type:DataTypes.STRING,
         allowNull:false
     },
-    productLocation: {
+    ListingLocation: {
         type:DataTypes.STRING,
         allowNull:false
     },
     image_URLS: {
         type: DataTypes.ARRAY(DataTypes.STRING(100)),
         allowNull:true
+    }
+
+    ,
+    hostId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        comment: "references Users.id - the host who created this listing"
     }
 
 });

@@ -30,9 +30,13 @@ export const Users = sequelize.define("Users", {
         allowNull: false,
     },
         dob : {
-            type: DataTypes.DATE,
-            allowNull:false,
-        }
+        type: DataTypes.DATE,
+        allowNull:false,
+    },
+    role : {
+        type:DataTypes.STRING,
+        allowNull:false,
+    }
     
     
 });

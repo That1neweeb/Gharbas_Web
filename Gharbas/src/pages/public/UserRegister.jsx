@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "./schema/register.schema";
 import LogoSideCard from "../../component/LogoSideCard";
 import useApi from "../../hooks/useAPI";
+import { toast } from "react-toastify";
 
  const Register = () => {
   const {
@@ -21,8 +22,10 @@ import useApi from "../../hooks/useAPI";
     try{
         const res = await callApi("POST",'/auth/register',{ data : userData});
         console.log(res);
+        toast.success("Registration successfull");
     }
     catch(err){
+      toast.error("Couldnt register try again");
       console.log(err);
     }
   };

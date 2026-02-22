@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "./schema/login.schema";
 import useApi from "../../hooks/useAPI";
 import LogoSideCard from "../../component/LogoSideCard";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const {
@@ -15,14 +16,20 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { callApi } = useApi();
+
+  const from = location.state?.from?.pathname || "/" 
+
 
   const handleLogin = async (loginData) => {
     try {
-      const res = await callApi("POST", "/auth/Login", { data: loginData });
-      localStorage.setItem("access_token", res?.data?.access_token);
-      navigate("/product", { replace: true });
+      const res = await callApi("POST", "/auth/login", { data: loginData });
+      localStorage.setItem("access_token", res?.access_token);
+      toast.success("Logged in successfully");
+      navigate(from, { replace: true });
     } catch (e) {
+      toast.error("Login failed: " + (e.message || ""));
       console.log(e.message);
     }
   };
@@ -93,7 +100,7 @@ const Login = () => {
 
           {/* Register Link */}
           <p className="text-sm text-center text-gray-600">
-            Don&apos;t have an account?
+            Don't have an account?
             <Link
               to="/register"
               className="text-orange-600 font-medium hover:underline ml-1"
