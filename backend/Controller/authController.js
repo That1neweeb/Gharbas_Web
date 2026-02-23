@@ -41,6 +41,7 @@ if(!email){
         res.status(401).send("Invalid password");
         return;
     }
+    // console.log(user.role);
     const token = generateteToken({user : user.toJSON()})
     res.status(200).send({access_token: token, message:"token generated successfully"});
 }
@@ -62,6 +63,7 @@ export const register = async (req, res) => {
       dob,
       phone,
       gender,
+      role,
     } = req.body;
 
     if (!password) {
@@ -82,6 +84,7 @@ export const register = async (req, res) => {
       dob,
       gender,
       customerPassword: hashedPassword,
+      role
     });
 
     res.status(201).json({

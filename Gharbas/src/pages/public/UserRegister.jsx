@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "./schema/register.schema";
 import LogoSideCard from "../../component/LogoSideCard";
@@ -20,7 +20,12 @@ import { toast } from "react-toastify";
 
   const onSubmit = async(userData) => {
     try{
-        const res = await callApi("POST",'/auth/register',{ data : userData});
+       const finaldata = {
+        ...userData,
+        role: "user"
+       }
+       
+        const res = await callApi("POST",'/auth/register',{ data : finaldata});
         console.log(res);
         toast.success("Registration successfull");
     }
@@ -238,6 +243,13 @@ import { toast } from "react-toastify";
             className="text-orange-600 font-medium hover:underline ml-1"
           >
             Login Here
+          </Link>
+        </p>
+        <p className="text-center text-gray-600 text-sm">
+          <Link 
+          to ="/HostRegister"
+          className="text-orange-600 font-medium hover:underline ml-1" >
+          Become a Host
           </Link>
         </p>
       </form>

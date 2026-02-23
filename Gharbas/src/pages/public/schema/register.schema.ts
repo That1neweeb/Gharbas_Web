@@ -44,6 +44,8 @@ export const RegisterSchema = z
       .regex(/[0-9]/, "Must contain at least one number"),
 
     confirmpassword: z.string().min(1, "Confirm password is required"),
+
+    
   })
   .refine((data) => data.password === data.confirmpassword, {
     path: ["confirmpassword"],

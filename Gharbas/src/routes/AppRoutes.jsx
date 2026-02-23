@@ -9,6 +9,7 @@ const ProductPage = React.lazy(() => import ("../pages/private/ProductDetails"))
 const LoginPage = React.lazy(() => import ("../pages/public/Login"));
 const RegisterPage = React.lazy(() => import("../pages/public/UserRegister"));
 const HostPage = React.lazy(() => import("../pages/private/Host"));
+const HostRegister = React.lazy(() => import("../pages/public/HostRegister"));
 
 export default function AppRoutes(){
     return(
@@ -22,6 +23,7 @@ export default function AppRoutes(){
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/HostRegister" element={<HostRegister />} />
 
             {/* Private Routes */}
             <Route element={<PrivateRoutes />}>
@@ -32,8 +34,6 @@ export default function AppRoutes(){
             <Route element={<HostRoute />}>
               <Route path="/host" element={<HostPage />} />
             </Route>
-
-            {/* Seller routes */}
             
 
             {/* Admin routes */}

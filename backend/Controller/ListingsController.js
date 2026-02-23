@@ -32,8 +32,17 @@ export const save = async(req,res) => {
             return res.status(403).send({ message: "A host can create only one listing" });
         }
 
-        // attach hostId to the listing
+        // handle uploaded file (multer puts file on req.file)
+        const imageUrls = [];
+        if (req.file) {
+            // store path relative to server root where uploads are served
+            imageUrls.push(`/uploads/${req.file.filename}`);
+        }
+
+        // attach hostId and image URLs to the listing payload
         const payload = { ...body, hostId: user.id };
+        if (imageUrls.length) payload.image_URLS = imageUrls;
+
         const listings = await Listings.create(payload);
         res.status(200).send({data: listings, message: "Data saved successfully"});
     } catch(e) {
@@ -41,7 +50,7 @@ export const save = async(req,res) => {
     }
 }
 
-
+// Get Listing details By LISTING id
 export const getListingById = async (req, res) => {
     try{
         const {id = null} = req.params;
@@ -60,8 +69,25 @@ export const getListingById = async (req, res) => {
     }
 }
 
+// Get listing details through HOST id
+export const getListingByHost = async (req,res) => {
+        try{
+        const hostId = req.user.id;
+        const listing = await Listings.findOne({where:{hostId}});
+        if(!listing){
+            res.status(401).send({data:null, message:"No listing found"});
+            return;
+        }
+       console.log(listing);
+       res.status(200).send({data:listing, message:"Listing found through host id"});
+       }    
+       catch(err){
+        res.status(500).send({message: err.message});
+       }
+}
+
 // update garnw parcha parameters are wrong 
-export const updateById = async (req, res) => {
+export const updateById = async (req, res) => { 
     try{
         const {id = null} = req.params
         const body = req.body

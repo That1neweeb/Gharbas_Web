@@ -1,63 +1,176 @@
-import React, { useState, useEffect } from "react";
-import { apiRequest } from "../../utils/api";
+import React, { useEffect, useState } from "react";
+// import { apiRequest } from "../../utils/api";
 import { toast } from "react-toastify";
+import useApi from "../../hooks/useAPI";
+import { set } from "zod";
 
 const Host = () => {
-  const [form, setForm] = useState({
-    ListingName: "",
-    Price: "",
-    Rooms: "",
-    Description: "",
-    ListingLocation: "",
-  });
+  const [form, setForm] = useState([]);
+  const [image, setImage] = useState(null);
 
+  const {callApi} = useApi();
+
+  // Initial Loading
+  useEffect(()=> {
+    const fetchContent = async() => {
+     try{
+        const res =  await callApi("GET","/listings/getListingByHost");
+        console.log(res.data)
+        setForm((res.data)?res.data:[]);  
+        setImage(form.iamge_URLS);
+    }
+    catch(err){
+      console.log(res.message);
+    } 
+    }
+    
+    fetchContent();
+  },[])
+
+// handle change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+// Handle submission 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = {
-        ListingName: form.ListingName,
-        Price: parseFloat(form.Price),
-        Rooms: parseInt(form.Rooms, 10),
-        Description: form.Description,
-        ListingLocation: form.ListingLocation,
-      };
-      const res = await apiRequest("post", "/listings", { data });
-      toast.success(res.message || "Listing created");
+      const formData = new FormData();
+      formData.append('ListingName', form.ListingName);
+      formData.append('Price', form.Price);
+      formData.append('Rooms', form.Rooms);
+      formData.append('Description', form.Description);
+      formData.append('ListingLocation', form.ListingLocation);
+      if (image) formData.append('image', image);
+
+      const res = await callApi("POST", "/listings", { data: formData });
+      toast.success(res.message || "Listing Updated");
     } catch (err) {
       toast.error(err.message || "Failed to create listing");
     }
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: "32px auto" }}>
-      <h2>Create Host Listing</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Listing Name</label>
-          <input name="ListingName" value={form.ListingName} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Price</label>
-          <input name="Price" type="number" value={form.Price} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Rooms</label>
-          <input name="Rooms" type="number" value={form.Rooms} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Location</label>
-          <input name="ListingLocation" value={form.ListingLocation} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Description</label>
-          <textarea name="Description" value={form.Description} onChange={handleChange} required />
-        </div>
-        <button type="submit">Create Listing</button>
-      </form>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8">
+        
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          Create a New Listing
+        </h2>
+        <p className="text-gray-500 mb-6">
+          Add details about your property to start hosting.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          
+          {/* Listing Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Listing Name
+            </label>
+            <input
+              name="ListingName"
+              value={form.ListingName}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              placeholder="Cozy Apartment in City Center"
+            />
+          </div>
+
+          {/* Price & Rooms Row */}
+          <div className="grid grid-cols-2 gap-4">
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Price (per night)
+              </label>
+              <input
+                name="Price"
+                type="number"
+                value={form.Price}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder="120"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Rooms
+              </label>
+              <input
+                name="Rooms"
+                type="number"
+                value={form.Rooms}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder="2"
+              />
+            </div>
+
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Location
+            </label>
+            <input
+              name="ListingLocation"
+              value={form.ListingLocation}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              placeholder="Kathmandu, Nepal"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              name="Description"
+              value={form.Description}
+              onChange={handleChange}
+              required
+              rows={4}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
+              placeholder="Describe your property..."
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <img value={`http:/`}></img>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files && e.target.files[0])}
+              className="w-full"
+            />
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600
+                       text-white px-5 py-2 rounded-lg
+                       transition shadow-md hover:shadow-lg"
+          >
+            Create Listing
+          </button>
+
+        </form>
+      </div>
     </div>
   );
 };

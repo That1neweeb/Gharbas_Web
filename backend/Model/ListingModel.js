@@ -30,9 +30,7 @@ export const Listings = sequelize.define("Listings",{
     image_URLS: {
         type: DataTypes.ARRAY(DataTypes.STRING(100)),
         allowNull:true
-    }
-
-    ,
+    },
     hostId: {
         type: DataTypes.INTEGER,
         allowNull: true,

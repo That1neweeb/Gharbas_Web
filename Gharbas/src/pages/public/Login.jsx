@@ -5,6 +5,7 @@ import { LoginSchema } from "./schema/login.schema";
 import useApi from "../../hooks/useAPI";
 import LogoSideCard from "../../component/LogoSideCard";
 import { toast } from "react-toastify";
+import { useAuth } from "../../Context/AuthContext";
 
 const Login = () => {
   const {
@@ -18,8 +19,10 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { callApi } = useApi();
+  const { fetchUser } = useAuth();
 
-  const from = location.state?.from?.pathname || "/" 
+
+  const from = location.state?.from?.pathname || "/home" 
 
 
   const handleLogin = async (loginData) => {
@@ -27,6 +30,9 @@ const Login = () => {
       const res = await callApi("POST", "/auth/login", { data: loginData });
       localStorage.setItem("access_token", res?.access_token);
       toast.success("Logged in successfully");
+      
+      await fetchUser();
+
       navigate(from, { replace: true });
     } catch (e) {
       toast.error("Login failed: " + (e.message || ""));
