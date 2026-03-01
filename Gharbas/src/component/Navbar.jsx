@@ -16,18 +16,21 @@ function Navbar() {
         <ul className="flex justify-center gap-8 flex-1">
           <li>
             <Link
-              to="/home"
+              to="/home"  
               className="text-white font-semibold hover:text-orange-100 transition"
             >
               Home
             </Link>
           </li>
           {user && (
-            <Link
-            className="text-white font-semibold hover:text-orange-100 transition"
-            >
-            My bookings
-            </Link>
+            <li>
+              <Link
+                to="/my-bookings"
+                className="text-white font-semibold hover:text-orange-100 transition"
+              >
+                My Bookings
+              </Link>
+            </li>
           )}
           <li>
             <Link
@@ -37,6 +40,18 @@ function Navbar() {
               For Hosts
             </Link>
           </li>
+          {
+            user?.role === "admin" && (
+                <li>
+                    <Link to="/admin"
+                    className="text-white font-semibold hover:text-orange-200 transition"
+                    >
+                      Admin Board
+                    </Link>
+              </li>    
+            )
+          }
+          
         </ul>
         {user && (
           <button
@@ -49,13 +64,12 @@ function Navbar() {
 
         {!user && (
           <Link to="/login">
-          <button
-            className="text-white font-semibold hover:text-orange-100 transition bg-orange-600 px-4 py-2 rounded-md hover:bg-orange-700"
-          >
-            Login
-          </button>
+            <button
+              className="text-white font-semibold hover:text-orange-100 transition bg-orange-600 px-4 py-2 rounded-md hover:bg-orange-700"
+            >
+              Login
+            </button>
           </Link>
-          
         )}
       </div>
     </nav>

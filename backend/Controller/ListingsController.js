@@ -1,9 +1,18 @@
 import { where } from "sequelize";
+import { Users } from "../Model/UserModel.js";
 import { Listings } from "../Model/ListingModel.js";
 
 export const getAllListings = async (req,res) => {
     try {
-        const listings = await Listings.findAll();
+        const listings = await Listings.findAll({
+            include: [{
+                model: Users,
+                as: 'host',
+                attributes: ['id', 'customerName', 'customerEmail', 'phone'],
+                required: false
+            }],
+            order: [['createdAt', 'DESC']]
+        });
         // console.log(listings);
         res.status(200).send({data: listings, message: "Products fetched successfully"})
     } catch(err) {
@@ -27,11 +36,6 @@ export const save = async(req,res) => {
             return res.status(403).send({ message: "Only hosts can create listings" });
         }
 
-        const existing = await Listings.findAll({ where: { hostId: user.id } });
-        if (existing && existing.length >= 1) {
-            return res.status(403).send({ message: "A host can create only one listing" });
-        }
-
         // handle uploaded file (multer puts file on req.file)
         const imageUrls = [];
         if (req.file) {
@@ -40,8 +44,14 @@ export const save = async(req,res) => {
         }
 
         // attach hostId and image URLs to the listing payload
-        const payload = { ...body, hostId: user.id };
-        if (imageUrls.length) payload.image_URLS = imageUrls;
+            const payload = { ...body, hostId: user.id };
+            if (imageUrls.length) payload.image_URLS = imageUrls;
+
+        const existing = await Listings.findAll({ where: { hostId: user.id } });
+        if (existing && existing.length >= 1) {
+            const listing = await Listings.update(payload,{where:{hostId:user.id}})
+            return res.status(200).send({ message: "Updated listing" });
+        }
 
         const listings = await Listings.create(payload);
         res.status(200).send({data: listings, message: "Data saved successfully"});
@@ -54,7 +64,15 @@ export const save = async(req,res) => {
 export const getListingById = async (req, res) => {
     try{
         const {id = null} = req.params;
-        const listings = await Listings.findOne({where: {id}});
+        const listings = await Listings.findOne({
+            where: {id},
+            include: [{
+                model: Users,
+                as: 'host',
+                attributes: ['id', 'customerName', 'customerEmail', 'phone'],
+                required: false
+            }]
+        });
         console.log(listings);
         if(!listings){
             res.status(404).send({message:"listing not found in table"});
@@ -73,7 +91,15 @@ export const getListingById = async (req, res) => {
 export const getListingByHost = async (req,res) => {
         try{
         const hostId = req.user.id;
-        const listing = await Listings.findOne({where:{hostId}});
+        const listing = await Listings.findOne({
+            where:{hostId},
+            include: [{
+                model: Users,
+                as: 'host',
+                attributes: ['id', 'customerName', 'customerEmail', 'phone'],
+                required: false
+            }]
+        });
         if(!listing){
             res.status(401).send({data:null, message:"No listing found"});
             return;
@@ -129,5 +155,27 @@ export const deleteById = async (req, res) => {
 
     }catch (e) {
         res.status(300).send({message: e.message});
+    }
+}
+
+// Get all listings for admin with host details
+export const getListingsForAdmin = async (req, res) => {
+    try {
+        const listings = await Listings.findAll({
+            include: [{
+                model: Users,
+                as: 'host',
+                attributes: ['id', 'customerName', 'customerEmail', 'phone'],
+                required: false
+            }],
+            order: [['createdAt', 'DESC']]
+        });
+        
+        res.status(200).send({
+            data: listings,
+            message: "All listings retrieved successfully"
+        });
+    } catch(err) {
+        res.status(500).send({message: err.message});
     }
 }

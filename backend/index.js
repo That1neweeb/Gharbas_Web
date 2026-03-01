@@ -11,7 +11,8 @@ import { connection } from "./db/db.js";
 import { router } from "./Routes/userRoutes.js";
 import { listingRouter } from "./Routes/listingsRoutes.js";
 import { authRouter } from "./Routes/authRoutes.js";
-
+import { bookingRouter } from "./Routes/bookingRoutes.js";
+import { initializeAssociations } from "./Model/associations.js";
 
 const app = express();
 const port = 3000
@@ -25,6 +26,7 @@ app.use("/uploads",express.static(path.join(__dirname, 'uploads')));
 app.use("/api/users", router);
 app.use("/api/listings", listingRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/bookings", bookingRouter);
 
 app.listen(port, () => {
     console.log(`Server is running in port ${port}`);   

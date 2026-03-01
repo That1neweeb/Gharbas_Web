@@ -6,9 +6,13 @@ export const sequelize = new Sequelize("Gharbas","postgres","root",{
     dialect : "postgres",
 }); 
 
-export const connection = () => {
+export const connection = async () => {
     try{
-        sequelize.sync({alter:true});
+        // Initialize associations dynamically to avoid circular import issues
+        const { initializeAssociations } = await import("../Model/associations.js");
+        await initializeAssociations();
+
+        await sequelize.sync({alter:true});
         console.log("database connected successfully");
     }
 
