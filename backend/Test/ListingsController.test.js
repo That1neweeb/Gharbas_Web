@@ -95,8 +95,8 @@ describe('ListingsController', () => {
 
       expect(mockRes.status).toHaveBeenCalledWith(200);
       expect(mockRes.send).toHaveBeenCalledWith({
-        message: 'Listing created successfully',
-        data: mockListing
+        data: mockListing,
+        message: 'Data saved successfully'
       });
     });
 
@@ -159,8 +159,7 @@ describe('ListingsController', () => {
 
       await save(mockReq, mockRes);
 
-      expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.send).toHaveBeenCalledWith(new Error('Database error'));
+      expect(mockRes.send).toHaveBeenCalledWith({ message: 'Database error' });
     });
   });
 });

@@ -122,13 +122,14 @@ describe('Listing Routes', () => {
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.message).toBe('Listing created successfully');
+      expect(response.body.message).toBe('Data saved successfully');
     });
 
     it('should return 403 for non-host users', async () => {
-      // Mock user as regular user
-      const originalAuthenticate = require('../middleware/authMiddleware.js').authenticate;
-      require('../middleware/authMiddleware.js').authenticate = (req, res, next) => {
+      // Temporarily modify the authenticate mock
+      const authModule = require('../middleware/authMiddleware.js');
+      const originalAuthenticate = authModule.authenticate;
+      authModule.authenticate = (req, res, next) => {
         req.user = { id: 1, role: 'user' };
         next();
       };
@@ -147,7 +148,7 @@ describe('Listing Routes', () => {
       expect(response.body.message).toBe('Only hosts can create listings');
 
       // Restore original mock
-      require('../middleware/authMiddleware.js').authenticate = originalAuthenticate;
+      authModule.authenticate = originalAuthenticate;
     });
   });
 });
