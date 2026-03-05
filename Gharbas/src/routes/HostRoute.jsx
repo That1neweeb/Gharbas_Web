@@ -9,12 +9,6 @@ const HostRoute = () => {
   const { user,loading } = useAuth();
   const token = localStorage.getItem("access_token");
 
-  // useEffect(()=>{
-  //   if(!loading && user && user.role != "host"){
-  //     toast.error("You dont have access");
-  //   }
-  // },[user,loading])
-
   if (!token) {
     toast.error("You arent logged in")
     return  <Navigate to="/login" state={{ from: location }} replace />

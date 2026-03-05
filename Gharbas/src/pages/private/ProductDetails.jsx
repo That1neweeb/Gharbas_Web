@@ -26,7 +26,7 @@ export default function ProductDetails() {
     fetchContent();
   }, [id]);
 
-  if (!content) return <p className="text-white text-center py-10">Loading...</p>;
+  if (!content) return <p className="text-black text-center py-10">Loading...</p>;
 
   // Room selection handler functions
   const increment = () => {
@@ -95,7 +95,7 @@ export default function ProductDetails() {
     : 0;
 
   return (
-    <div className="mx-auto min-h-screen p-6 bg-[#1F1F1F] text-white shadow-lg">
+    <div className="mx-auto min-h-screen p-6 bg-white text-black shadow-lg">
       {/* Listing Info */}
       <div className="flex flex-col md:flex-row gap-6">
         {content.image_URLS && (
@@ -109,14 +109,14 @@ export default function ProductDetails() {
         <div className="flex flex-col justify-between md:w-1/2">
           <div>
             <h1 className="text-3xl font-bold mb-2">{content.ListingName}</h1>
-            <p className="text-gray-400 mb-4">{content.Description}</p>
-            <p className="text-gray-300 mb-1">📍 Location: {content.ListingLocation}</p>
-            <p className="text-gray-300 mb-4">🏠 Rooms Available: {content.Rooms}</p>
+            <p className="text-gray-600 mb-4">{content.Description}</p>
+            <p className="text-gray-700 mb-1">📍 Location: {content.ListingLocation}</p>
+            <p className="text-gray-700 mb-4">🏠 Rooms Available: {content.Rooms}</p>
             <p className="text-xl font-bold text-orange-400 mb-4">${content.Price} per night</p>
           </div>
 
           {/* Booking Options */}
-          <div className="mt-4 bg-gray-800 p-6 rounded-lg">
+          <div className="mt-4 bg-gray-100 p-6 rounded-lg">
             <h2 className="text-2xl font-semibold mb-4">Book This HomeStay</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               
@@ -130,7 +130,7 @@ export default function ProductDetails() {
                   value={checkInDate}
                   onChange={(e) => setCheckInDate(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 rounded bg-gray-200 text-black border border-gray-300 focus:border-orange-500 focus:outline-none"
                 />
               </div>
 
@@ -144,7 +144,7 @@ export default function ProductDetails() {
                   value={checkOutDate}
                   onChange={(e) => setCheckOutDate(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 rounded bg-gray-200 text-black border border-gray-300 focus:border-orange-500 focus:outline-none"
                 />
               </div>
 
@@ -157,17 +157,17 @@ export default function ProductDetails() {
                   <button
                     type="button"
                     onClick={decrement}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-white font-bold transition"
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-black font-bold transition"
                   >
                     −
                   </button>
-                  <span className="px-4 py-2 bg-gray-700 rounded text-white font-semibold">
+                  <span className="px-4 py-2 bg-gray-200 rounded text-black font-semibold">
                     {rooms}
                   </span>
                   <button
                     type="button"
                     onClick={increment}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-white font-bold transition"
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-black font-bold transition"
                   >
                     +
                   </button>
@@ -182,7 +182,7 @@ export default function ProductDetails() {
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none resize-none"
+                  className="w-full px-3 py-2 rounded bg-gray-200 text-black border border-gray-300 focus:border-orange-500 focus:outline-none resize-none"
                   rows="3"
                   placeholder="Any special requests or notes..."
                 />
@@ -190,7 +190,7 @@ export default function ProductDetails() {
 
               {/* Price Summary */}
               {totalPrice > 0 && (
-                <div className="p-3 bg-gray-700 rounded border border-gray-600">
+                <div className="p-3 bg-gray-200 rounded border border-gray-300">
                   <div className="flex justify-between mb-2">
                     <span>Nights:</span>
                     <span className="font-semibold">{nights}</span>
@@ -203,7 +203,7 @@ export default function ProductDetails() {
                     <span>Rooms:</span>
                     <span className="font-semibold">{rooms}</span>
                   </div>
-                  <div className="border-t border-gray-600 pt-2 flex justify-between">
+                  <div className="border-t border-gray-300 pt-2 flex justify-between">
                     <span className="font-bold text-lg">Total Price:</span>
                     <span className="font-bold text-lg text-orange-400">${totalPrice.toFixed(2)}</span>
                   </div>

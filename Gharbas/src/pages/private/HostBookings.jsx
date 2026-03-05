@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { Navbar } from "../../component/Navbar";
 import useApi from "../../hooks/useAPI";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";

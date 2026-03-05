@@ -2,19 +2,30 @@ import { ToastContainer } from 'react-toastify';
 import './App.css'
 import Navbar from './component/Navbar'
 import AppRoutes from './routes/AppRoutes';
-import { AuthProvider } from './Context/AuthContext';
+import { AuthProvider, useAuth } from './Context/AuthContext';
+import Spinner from './component/LoadingScreen/Spinner';
 
+function AppContent() {
+  const { loading } = useAuth();
 
-function App() {
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
-    <AuthProvider>
       <ToastContainer />
       <Navbar />
       <AppRoutes />
-    </AuthProvider>
-      
     </>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

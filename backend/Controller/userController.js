@@ -1,12 +1,17 @@
 import { Users } from "../Model/UserModel.js";
 import { hashPassword } from "../security/hashPassword.js";
+import { Op } from "sequelize";
 
 export const getAll = async (req,res) => {
     try {
-        const user = await Users.findAll();
+        const user = await Users.findAll({
+            where: {
+                role: { [Op.ne]: 'admin' }
+            }
+        });
         res.status(200).send({data: user, message: "Data retrieved successfully"});
     } catch(err) {
-        res.status(500).send(e);
+        res.status(500).send(err);
     }
 }
 
