@@ -30,7 +30,8 @@ if(!email){
 
 // check if user exists first
     if(!user){
-        res.status(404).send("User not found");
+        // consistent JSON response so the frontend can read the message property
+        res.status(404).json({message: "User not found"});
         return;
     }
 // compare password using bcrypt 
@@ -38,7 +39,8 @@ if(!email){
     const isMatch = await bcrypt.compare(password, storedpassword);
 
     if(!isMatch){
-        res.status(401).send("Invalid password");
+        // send structured error message as JSON
+        res.status(401).json({message: "Invalid password"});
         return;
     }
     // console.log(user.role);
